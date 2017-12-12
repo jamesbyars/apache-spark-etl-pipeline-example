@@ -29,6 +29,9 @@ schema = StructType([
 data = spark.read.csv(source_data_file, schema=schema).cache()
 
 count = data.count()
+
+data.show()
+
 print("Data points from files count: {}".format(count))
 
 ###############################################################
@@ -87,11 +90,11 @@ print("Removed {} nulls".format(df_with_month_year_count - df2_count))
 
 from pyspark.sql.functions import avg
 
-monthly_avg_close_df = df2.groupBy(df2.month).agg(avg("close").alias("average_month_close"))
+monthly_avg_close_df = df2.groupBy(df2.month).agg(avg("close").alias("average_month_close")).orderBy(df2.month)
 
 monthly_avg_close_df.show()
 
-adj_close_diff_than_close = df2.filter("close != adj_close").groupBy(df2.month).count()
+adj_close_diff_than_close = df2.filter("close != adj_close").groupBy(df2.month).count().orderBy(df2.month)
 
 adj_close_diff_than_close.show()
 

@@ -16,11 +16,15 @@ Set config script permission (you may not need to do this depending on how you e
 
 Move to /vagrant directory
 
-`cd /vagrant`
+`cd /vagrant/config`
 
 Execute config
 
 `./config.sh`
+
+Install Pyspark
+
+`./install_pyspark.sh`
 
 Move to src directory
 
@@ -64,6 +68,20 @@ CREATE TABLE stock_data (
     month int,
     year int,
     day int
+);
+```
+
+```
+CREATE TABLE avg_month_close (
+    month int,
+    average_month_close int
+);
+```
+
+```
+CREATE TABLE adjusted_close_count (
+    month int,
+    count int
 );
 ```
 
