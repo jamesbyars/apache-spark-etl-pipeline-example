@@ -91,31 +91,40 @@ monthly_avg_close_df = df2.groupBy(df2.month).agg(avg("close").alias("average_mo
 
 monthly_avg_close_df.show()
 
-adj_close_diff_than_close = df2.filter("close != adj_close").groupBy(df2.month).count().alias("adjusted_close_count")
+adj_close_diff_than_close = df2.filter("close != adj_close").groupBy(df2.month).count()
 
 adj_close_diff_than_close.show()
 
+###############################################################
+#########################   LOAD  #############################
+###############################################################
 
-# ###############################################################
-# #########################   LOAD  #############################
-# ###############################################################
-#
-# print("Starting DB write")
-#
-# from pyspark.sql import DataFrameWriter
-#
-# jdbc_writer = DataFrameWriter(df2)
-#
-# jdbc_url = "jdbc:postgresql://0.0.0.0:5432/postgres"
-# table = "stock_data"
-# mode = "overwrite"
-# properties = {"user": "postgres",
-#               "password": "mysecretpassword",
-#               "driver": "org.postgresql.Driver"}
-#
-# ### Write data frame to postgres db
-# jdbc_writer.jdbc(jdbc_url, table, mode, properties)
-#
-# print("DB Write complete")
-#
-# print("Complete")
+print("Starting DB write")
+
+from pyspark.sql import DataFrameWriter
+
+
+def write_df_to_table(df_writer, table):
+    jdbc_url = "jdbc:postgresql://0.0.0.0:5432/postgres"
+    mode = "overwrite"
+    properties = {"user": "postgres",
+                  "password": "mysecretpassword",
+                  "driver": "org.postgresql.Driver"}
+
+    print("Writing to {}".format(table))
+
+    df_writer.jdbc(jdbc_url, table, mode, properties)
+
+
+# Write df2
+write_df_to_table(DataFrameWriter(df2), "stock_data")
+
+# Write monthly average close
+write_df_to_table(DataFrameWriter(monthly_avg_close_df), "avg_month_close")
+
+# Write adj close diff than close count
+write_df_to_table(DataFrameWriter(adj_close_diff_than_close), "adjusted_close_count")
+
+print("DB Write complete")
+
+print("Complete")
