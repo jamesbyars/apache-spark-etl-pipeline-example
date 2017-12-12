@@ -2,7 +2,7 @@ import requests
 
 base_url = "http://data.pystock.com/2016/"
 
-with open("data.txt", 'r') as data_file:
+with open("days.txt", 'r') as data_file:
   files = data_file.readlines()
 
 
@@ -13,3 +13,6 @@ for file in files:
     r = requests.get(file_name)
     for chunk in r.iter_content(chunk_size=128):
         fd.write(chunk)
+
+
+
