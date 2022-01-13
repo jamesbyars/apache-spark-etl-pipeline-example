@@ -14,7 +14,7 @@ Set config script permission (you may not need to do this depending on how you e
 
 `sudo chmod +x /vagrant/config.sh`
 
-Move to /vagrant directory
+Change to /vagrant directory
 
 `cd /vagrant/config`
 
